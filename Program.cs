@@ -1,4 +1,4 @@
-﻿namespace ConsoleApp
+﻿namespace DungeonEscape
 {
     public class Program
     {
@@ -12,7 +12,7 @@
             string[][] map = new string[20][];
             for (int i = 0; i < map.Length; i++)
             {
-                map[i] = new string[40];
+                map[i] = new string[80];
                 if (i == 0 || i == map.Length - 1)
                     for (int j = 0; j < map[i].Length; j++)
                         map[i][j] = "█";
@@ -24,9 +24,12 @@
                             map[i][j] = " ";   
             }
             
-            bool isRunning = true;
-            while (isRunning)
-            {   
+            // bool isRunning = true;
+            // while (isRunning)
+            // {   
+
+
+            // }
 
                 map.ToList().ForEach(x =>
                 {
@@ -34,9 +37,6 @@
                         Console.Write(x[i]);
                     Console.WriteLine();
                 });
-            }
-
-
 
 
             Console.ReadLine();

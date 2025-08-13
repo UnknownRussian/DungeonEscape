@@ -1,7 +1,10 @@
-public class Elf : Player
+namespace DungeonEscape.Entities
 {
-    public Elf(string name) : base (name)
+    public class Elf : Player
     {
-        this.type = PlayerType.human;
+        public Elf(string name) : base (name)
+        {
+            this.type = PlayerType.elf;
+        }
     }
 }

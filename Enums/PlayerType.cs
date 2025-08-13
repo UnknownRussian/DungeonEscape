@@ -1,10 +1,13 @@
-public enum PlayerType
+namespace DungeonEscape.Enums
 {
-    princess,
-    prince,
-    spy,
-    superhero,
-    elf,
-    mage,
-    human
+    public enum PlayerType
+    {
+        princess,
+        prince,
+        spy,
+        superhero,
+        elf,
+        mage,
+        human
+    }
 }

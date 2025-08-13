@@ -1,46 +1,56 @@
-public class Player
+using DungeonEscape.Enums;
+
+namespace DungeonEscape.Entities
 {
-    public string name { get; private set; }
-    protected PlayerType type;
-    private int xPosition, yPosition;
-    
+    public class Player
+    {
+        public string name { get; private set; }
+        protected PlayerType type;
+        protected List<Item> items;
+        private int xPosition, yPosition;
+        protected int level; // Create function for this
+        protected int xp; // Same goes for this BS xD
+        private Stats stats;
 
-    public Player(string name)
-    {
-        this.name = name;
-        this.type = PlayerType.human;
-        this.xPosition = 0;
-        this.yPosition = 0;
-    }
-    
-    public string GetPlayerIcon()
-    {
-        return type switch
+        public Player(string name)
         {
-            PlayerType.princess => "👸",
-            PlayerType.spy => "🕵",
-            PlayerType.elf => "🧝",
-            PlayerType.mage => "🧙",
-            PlayerType.superhero => "🦸",
-            PlayerType.human => "🙎",
-            PlayerType.prince => "🤴",
-            _ => throw new Exception("Error: PlayerType not found...")
-        };
-    }
+            this.name = name;
+            this.type = PlayerType.human;
+            this.xPosition = 0;
+            this.yPosition = 0;
+            this.level = 1;
+            this.xp = 0;
+        }
 
-    /// <summary>
-    /// Manually override player position
-    /// </summary>
-    /// <param name="x"></param>
-    /// <param name="y"></param>
-    public void SetPos(int x, int y)
-    {
-        this.xPosition = x;
-        this.yPosition = y;
-    }
+        public string GetPlayerIcon()
+        {
+            return type switch
+            {
+                PlayerType.princess => "👸",
+                PlayerType.spy => "🕵",
+                PlayerType.elf => "🧝",
+                PlayerType.mage => "🧙",
+                PlayerType.superhero => "🦸",
+                PlayerType.human => "🙎",
+                PlayerType.prince => "🤴",
+                _ => throw new Exception("Error: PlayerType not found...")
+            };
+        }
 
-    public void MoveLeft(int borderLeft) => xPosition = (xPosition == borderLeft) ? xPosition : xPosition--;
-    public void MoveRight(int borderRight) => xPosition = (xPosition == borderRight) ? xPosition : xPosition++;
-    public void MoveUp(int borderTop) => yPosition = (yPosition == borderTop) ? yPosition : yPosition--;
-    public void MoveDown(int borderBottom) => yPosition = (yPosition == borderBottom) ? yPosition : yPosition++;
+        /// <summary>
+        /// Manually override player position
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public void SetPos(int x, int y)
+        {
+            this.xPosition = x;
+            this.yPosition = y;
+        }
+
+        public void MoveLeft(int borderLeft) => xPosition = (xPosition == borderLeft) ? xPosition : xPosition--;
+        public void MoveRight(int borderRight) => xPosition = (xPosition == borderRight) ? xPosition : xPosition++;
+        public void MoveUp(int borderTop) => yPosition = (yPosition == borderTop) ? yPosition : yPosition--;
+        public void MoveDown(int borderBottom) => yPosition = (yPosition == borderBottom) ? yPosition : yPosition++;
+    }
 }
