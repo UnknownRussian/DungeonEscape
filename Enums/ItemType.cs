@@ -4,7 +4,6 @@ namespace DungeonEscape.Enums
     {
         weapon,
         accessory,
-        buff,
         key,
         spell
     }

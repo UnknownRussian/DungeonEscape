@@ -1,33 +1,39 @@
 using DungeonEscape.Enums;
 
-namespace DungeonEscape.Entities
+namespace DungeonEscape.Entities.Player
 {
     public class Player
     {
-        public string name { get; private set; }
+        public string Name { get; private set; }
         protected PlayerType type;
         protected List<Item> items;
+        protected List<Item> equipedItems;
         private int xPosition, yPosition;
         protected int level; // Create function for this
         protected int xp; // Same goes for this BS xD
-        private Stats stats;
+        protected int health; // And this :P
+        public Stats Stats { get; protected set; }
 
         public Player(string name)
         {
-            this.name = name;
+            this.Name = name;
             this.type = PlayerType.human;
             this.xPosition = 0;
             this.yPosition = 0;
             this.level = 1;
             this.xp = 0;
+            this.health = 100;
+            this.Stats = new Stats(
+                damage: 10,
+                defence: 10
+            );
         }
 
-        public string GetPlayerIcon()
+        public string GetIcon()
         {
             return type switch
             {
                 PlayerType.princess => "👸",
-                PlayerType.spy => "🕵",
                 PlayerType.elf => "🧝",
                 PlayerType.mage => "🧙",
                 PlayerType.superhero => "🦸",
