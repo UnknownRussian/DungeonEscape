@@ -7,12 +7,14 @@ namespace DungeonEscape.Entities
     {
         // Static
         public static List<Floor> Floors = new List<Floor>();
+        public static int LengthXLimit { get; set; } = 60;
+        public static int LengthYLimit { get; set; } = 20;
 
         // Non-static
         public Tile[][] Tiles { get; private set; }
         public List<Room> Rooms { get; private set; }
-        public static int LengthXLimit { get; set; } = 60;
-        public static int LengthYLimit { get; set; } = 20;
+        public (int X, int Y) StairsUp { get; private set; }
+        public (int X, int Y) StairsDown { get; private set; } 
 
         public Floor(int amountOfRooms = 5)
         {
@@ -75,7 +77,7 @@ namespace DungeonEscape.Entities
             }
         }
 
-        private void UpdateTiles()
+        public void UpdateTiles(bool updatePlayer = false)
         {
             Rooms.ForEach(room =>
             {
@@ -121,6 +123,24 @@ namespace DungeonEscape.Entities
                 {
                     Tiles[room.StairsUp.Y][room.StairsUp.X] = Tile.StairsUp;
                 }
+
+                // Place Key
+                if (room.Key.X != -1 && room.Key.Y != -1)
+                {
+                    Tiles[room.Key.Y][room.Key.X] = Tile.Key;
+                }
+
+                // Place Ladders (Only if key is found xD)
+                if (Program.player.IsKeyFound && room.EscapeLadder.X != -1 && room.EscapeLadder.Y != -1)
+                {
+                    Tiles[room.EscapeLadder.Y][room.EscapeLadder.X] = Tile.Ladder;
+                }
+
+                if (updatePlayer)
+                {
+                    var pPos = Program.player.Position;
+                    Tiles[pPos.Y][pPos.X] = Tile.Player;
+                }
             });
         }
 
@@ -165,6 +185,7 @@ namespace DungeonEscape.Entities
 
         public void PrintAll()
         {
+            Console.Clear();
             for (int y = 0; y < Tiles.Length; y++)
             {
                 for (int x = 0; x < Tiles[y].Length; x++)
@@ -179,7 +200,9 @@ namespace DungeonEscape.Entities
                         Tile.None => "▚", // black large square
                         Tile.Edge => "░", // rock
                         Tile.Enemy => "👾", // alien monster
-                        Tile.Item => "🎁", // wrapped gift
+                        Tile.Player => "X",
+                        Tile.Key => "±", // key
+                        Tile.Ladder => "≡",
                         _ => " ",  // fallback
                     };
 
@@ -264,18 +287,20 @@ namespace DungeonEscape.Entities
         public void PlaceStairs()
         {
             // Only place stairs if more than 1 floor
-            if (Floors.Count == 1)
+            if (Floors.Count != 1)
             {
                 // Only Stairs Up
                 if (Floors.IndexOf(this) == 0)
                 {
                     int i = Rooms.Count - 1;
                     Rooms[i].AddStairsUp(Rooms[i].CornerBottomRight.x - 1, Rooms[i].CornerBottomRight.y - 1);
+                    StairsUp = (Rooms[i].CornerBottomRight.x - 1, Rooms[i].CornerBottomRight.y - 1);
                 }
                 // Only Stairs Down
                 if (Floors.IndexOf(this) == Floors.Count - 1)
                 {
                     Rooms[0].AddStairsDown(Rooms[0].CornerTopLeft.x + 1, Rooms[0].CornerTopLeft.y + 1);
+                    StairsDown = (Rooms[0].CornerTopLeft.x + 1, Rooms[0].CornerTopLeft.y + 1);
                 }
                 // Stairs Up and Down
                 if (Floors.IndexOf(this) != 0 && Floors.IndexOf(this) != Floors.Count - 1)
@@ -283,10 +308,42 @@ namespace DungeonEscape.Entities
                     int i = Rooms.Count - 1;
                     Rooms[i].AddStairsUp(Rooms[i].CornerBottomRight.x - 1, Rooms[i].CornerBottomRight.y - 1);
                     Rooms[0].AddStairsDown(Rooms[0].CornerTopLeft.x + 1, Rooms[0].CornerTopLeft.y + 1);
+                    StairsUp = (Rooms[i].CornerBottomRight.x - 1, Rooms[i].CornerBottomRight.y - 1);
+                    StairsDown = (Rooms[0].CornerTopLeft.x + 1, Rooms[0].CornerTopLeft.y + 1);
                 }
 
                 UpdateTiles();
             }
+        }
+
+        public static void PlaceKey()
+        {
+            Random r = new Random();
+            int floor = Floors.Count != 1 ? r.Next(0, Floors.Count) : 0;
+            int room = Floors[floor].Rooms.Count != 1 ? r.Next(0, Floors[floor].Rooms.Count) : 0;
+
+            Floors[floor].Rooms[room].AddKey(Floors[floor].Rooms[room].CornerBottomLeft.x + 1, Floors[floor].Rooms[room].CornerBottomLeft.y - 1);
+        }
+
+        public static void PlaceLadders()
+        {
+            Random r = new Random();
+            int floor = Floors.Count != 1 ? r.Next(0, Floors.Count) : 0;
+            int room = Floors[floor].Rooms.Count != 1 ? r.Next(0, Floors[floor].Rooms.Count) : 0;
+
+            Floors[floor].Rooms[room].AddEscapeLadders(Floors[floor].Rooms[room].CornerTopRight.x - 1, Floors[floor].Rooms[room].CornerTopRight.y + 1);
+        }
+
+        public (int x, int y, int floor) CheckPlayerMove(int x, int y)
+        {
+            if (Tiles[y][x] == Tile.Floor || Tiles[y][x] == Tile.Key || Tiles[y][x] == Tile.Door || Tiles[y][x] == Tile.StairsDown || Tiles[y][x] == Tile.StairsUp || Tiles[y][x] == Tile.Ladder)
+            {
+                Tiles[y][x] = Tile.Player;
+                UpdateTiles();
+                return (x, y, Floors.IndexOf(this));
+            }
+            else
+                return (Program.player.Position.X, Program.player.Position.Y, Floors.IndexOf(this));
         }
     }
 
@@ -299,7 +356,9 @@ namespace DungeonEscape.Entities
         None,
         Edge,
         Enemy,
-        Item,
-        Door
+        Key,
+        Door,
+        Player,
+        Ladder
     }
 }

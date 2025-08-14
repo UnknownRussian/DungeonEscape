@@ -17,6 +17,7 @@ namespace DungeonEscape.Entities
         public (int X, int Y) StairsUp { get; private set; }
         public (int X, int Y) StairsDown { get; private set; }
         public (int X, int Y) EscapeLadder { get; private set; }
+        public (int X, int Y) Key { get; private set; }
 
 
         public (int x, int y) CornerTopLeft, CornerTopRight, CornerBottomLeft, CornerBottomRight;
@@ -29,6 +30,7 @@ namespace DungeonEscape.Entities
             Height = r.Next(MinHeight, MaxHeight + 1);
             StairsUp = (-1, -1);
             StairsDown = (-1, -1);
+            Key = (-1, -1);
         }
 
         /// <summary>
@@ -74,6 +76,21 @@ namespace DungeonEscape.Entities
         public void AddStairsDown(int x, int y)
         {
             StairsDown = (x, y);
+        }
+
+        /// <summary>
+        /// Add Key to Room
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public void AddKey(int x, int y)
+        {
+            Key = (x, y);
+        }
+
+        public void AddEscapeLadders(int x, int y)
+        {
+            EscapeLadder = (x, y);
         }
     }
 }
