@@ -30,13 +30,13 @@
 
 
             // }
-
-                map.ToList().ForEach(x =>
-                {
-                    for (int i = 0; i < x.Length; i++)
-                        Console.Write(x[i]);
-                    Console.WriteLine();
-                });
+            
+            map.ToList().ForEach(x =>
+            {
+                for (int i = 0; i < x.Length; i++)
+                    Console.Write(x[i]);
+                Console.WriteLine();
+            });
 
 
             Console.ReadLine();

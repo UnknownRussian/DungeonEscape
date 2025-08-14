@@ -1,5 +1,3 @@
-using DungeonEscape.Enums;
-
 namespace DungeonEscape.Entities
 {
     public class Item
@@ -8,11 +6,23 @@ namespace DungeonEscape.Entities
         public ItemType Type { get; private set; }
         public Stats Stats { get; private set; }
 
-        public Item(string name, ItemType type, Stats stats)
+        public Item(string name, string icon, ItemType type, Stats stats)
         {
-            this.Name = name;
             this.Type = type;
             this.Stats = stats;
         }
+
+        public string Icon()
+        {
+            return "";
+        }
+    }
+    
+    public enum ItemType
+    {
+        weapon,
+        accessory,
+        key,
+        spell
     }
 }

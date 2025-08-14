@@ -1,6 +1,4 @@
-using DungeonEscape.Enums;
-
-namespace DungeonEscape.Entities.Player
+namespace DungeonEscape.Entities
 {
     public class Player
     {
@@ -12,6 +10,7 @@ namespace DungeonEscape.Entities.Player
         protected int level; // Create function for this
         protected int xp; // Same goes for this BS xD
         protected int health; // And this :P
+        protected int lives; // Basically amount of lives until game is over.
         public Stats Stats { get; protected set; }
 
         public Player(string name)
@@ -29,7 +28,7 @@ namespace DungeonEscape.Entities.Player
             );
         }
 
-        public string GetIcon()
+        public string Icon()
         {
             return type switch
             {
@@ -58,5 +57,16 @@ namespace DungeonEscape.Entities.Player
         public void MoveRight(int borderRight) => xPosition = (xPosition == borderRight) ? xPosition : xPosition++;
         public void MoveUp(int borderTop) => yPosition = (yPosition == borderTop) ? yPosition : yPosition--;
         public void MoveDown(int borderBottom) => yPosition = (yPosition == borderBottom) ? yPosition : yPosition++;
+    }
+
+    public enum PlayerType
+    {
+        princess,
+        prince,
+        spy,
+        superhero,
+        elf,
+        mage,
+        human
     }
 }
