@@ -9,17 +9,9 @@ namespace DungeonEscape
         {
             Console.OutputEncoding = System.Text.Encoding.Unicode;
 
-            Player player = new Player("Unknown");
-            player.SetPos(1, 1);
-            player.SetLastPos();
-            Map map = new Map(player);
-            map.PrintMap();
-
             while (true)
             {
-                player.MovePlayer(map);
-                player.SetLastPos();
-                map.PrintMap();
+
             }
         }
     }
