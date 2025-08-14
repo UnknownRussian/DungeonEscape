@@ -3,7 +3,10 @@ namespace DungeonEscape.Entities
     public class Enemy
     {
         public EnemyType Type { get; private set; }
+        public int Exp { get; private set; }
+        public int Health { get; private set; } 
         private int xPosition, yPosition;
+        public Stats Stats { get; protected set; }
 
         public Enemy()
         {

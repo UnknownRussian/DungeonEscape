@@ -3,14 +3,14 @@ namespace DungeonEscape.Entities
     public class Player
     {
         public string Name { get; private set; }
-        protected PlayerType type;
-        protected List<Item> items;
-        protected List<Item> equipedItems;
+        private PlayerType type;
+        public List<Item> Items { get; private set; }
+        public List<Item> EquipedItems { get; private set; }
         private int xPosition, yPosition;
-        protected int level; // Create function for this
-        protected int xp; // Same goes for this BS xD
-        protected int health; // And this :P
-        protected int lives; // Basically amount of lives until game is over.
+        public int Level { get; private set; } // Create function for this
+        public int Exp { get; private set; } // Same goes for this BS xD
+        public int Health { get; private set; } // And this :P
+        public int Lives { get; private set; } // Basically amount of lives until game is over.
         public Stats Stats { get; protected set; }
 
         public Player(string name)
@@ -19,9 +19,9 @@ namespace DungeonEscape.Entities
             this.type = PlayerType.human;
             this.xPosition = 0;
             this.yPosition = 0;
-            this.level = 1;
-            this.xp = 0;
-            this.health = 100;
+            this.Level = 1;
+            this.Exp = 0;
+            this.Health = 100;
             this.Stats = new Stats(
                 damage: 10,
                 defence: 10
