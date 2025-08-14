@@ -21,6 +21,12 @@ namespace DungeonEscape
             Console.WriteLine("▲ - Stairs Up");
             Console.WriteLine("▼ - Stairs Down");
             Console.WriteLine();
+            Console.WriteLine("Player movement:");
+            Console.WriteLine("Arrow Key Up     - Move Up");
+            Console.WriteLine("Arrow Key Down   - Move Down");
+            Console.WriteLine("Arrow Key Left   - Move Left");
+            Console.WriteLine("Arrow Key Right  - Move Right");
+            Console.WriteLine();
             Console.WriteLine("The rules are simple... Find the key!");
             Console.WriteLine();
             Console.Write("How many floors do you want to explore? (int): ");
