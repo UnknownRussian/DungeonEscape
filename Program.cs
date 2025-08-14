@@ -1,5 +1,4 @@
 ﻿using System;
-using DungeonEscape.Entities;
 
 namespace DungeonEscape
 {
