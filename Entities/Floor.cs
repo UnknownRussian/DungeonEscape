@@ -5,9 +5,12 @@ namespace DungeonEscape.Entities
 {
     public class Floor
     {
+        // Static
+        public static List<Floor> Floors = new List<Floor>();
+
+        // Non-static
         public Tile[][] Tiles { get; private set; }
-        public List<Room> Rooms;
-        public int Level { get; private set; } // Last floor should have an exit.
+        public List<Room> Rooms { get; private set; }
         public static int LengthXLimit { get; set; } = 60;
         public static int LengthYLimit { get; set; } = 20;
 
@@ -17,6 +20,7 @@ namespace DungeonEscape.Entities
             GenerateEdges();
             GenerateRooms(amountOfRooms);
             PlaceDoors();
+            Floors.Add(this);
         }
 
         private void GenerateEdges()
@@ -105,6 +109,18 @@ namespace DungeonEscape.Entities
                         }
                     }
                 }
+
+                // Place Stairs Down
+                if (room.StairsDown.X != -1 && room.StairsDown.Y != -1)
+                {
+                    Tiles[room.StairsDown.Y][room.StairsDown.X] = Tile.StairsDown;
+                }
+
+                // Place Stairs Down
+                if (room.StairsUp.X != -1 && room.StairsUp.Y != -1)
+                {
+                    Tiles[room.StairsUp.Y][room.StairsUp.X] = Tile.StairsUp;
+                }
             });
         }
 
@@ -158,8 +174,8 @@ namespace DungeonEscape.Entities
                         Tile.Wall => "█",  // brick
                         Tile.Door => " ",  // door
                         Tile.Floor => " ",  // small white square
-                        Tile.StairsUp => "🔼", // up arrow
-                        Tile.StairsDown => "🔽", // down arrow
+                        Tile.StairsUp => "▲", // up arrow
+                        Tile.StairsDown => "▼", // down arrow
                         Tile.None => "▚", // black large square
                         Tile.Edge => "░", // rock
                         Tile.Enemy => "👾", // alien monster
@@ -243,6 +259,34 @@ namespace DungeonEscape.Entities
             }
 
             UpdateTiles();
+        }
+
+        public void PlaceStairs()
+        {
+            // Only place stairs if more than 1 floor
+            if (Floors.Count == 1)
+            {
+                // Only Stairs Up
+                if (Floors.IndexOf(this) == 0)
+                {
+                    int i = Rooms.Count - 1;
+                    Rooms[i].AddStairsUp(Rooms[i].CornerBottomRight.x - 1, Rooms[i].CornerBottomRight.y - 1);
+                }
+                // Only Stairs Down
+                if (Floors.IndexOf(this) == Floors.Count - 1)
+                {
+                    Rooms[0].AddStairsDown(Rooms[0].CornerTopLeft.x + 1, Rooms[0].CornerTopLeft.y + 1);
+                }
+                // Stairs Up and Down
+                if (Floors.IndexOf(this) != 0 && Floors.IndexOf(this) != Floors.Count - 1)
+                {
+                    int i = Rooms.Count - 1;
+                    Rooms[i].AddStairsUp(Rooms[i].CornerBottomRight.x - 1, Rooms[i].CornerBottomRight.y - 1);
+                    Rooms[0].AddStairsDown(Rooms[0].CornerTopLeft.x + 1, Rooms[0].CornerTopLeft.y + 1);
+                }
+
+                UpdateTiles();
+            }
         }
     }
 

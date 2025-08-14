@@ -13,9 +13,10 @@ namespace DungeonEscape.Entities
 
         // Non-Static Values
         public int Width, Height;
-        public List<(int X, int Y)> Doors;
-        public (int X, int Y) StairsUp;
-        public (int X, int Y) StairsDown;
+        public List<(int X, int Y)> Doors { get; private set; }
+        public (int X, int Y) StairsUp { get; private set; }
+        public (int X, int Y) StairsDown { get; private set; }
+        public (int X, int Y) EscapeLadder { get; private set; }
 
 
         public (int x, int y) CornerTopLeft, CornerTopRight, CornerBottomLeft, CornerBottomRight;
@@ -26,6 +27,8 @@ namespace DungeonEscape.Entities
             Random r = new Random();
             Width = r.Next(MinWidth, MaxWidth + 1);
             Height = r.Next(MinHeight, MaxHeight + 1);
+            StairsUp = (-1, -1);
+            StairsDown = (-1, -1);
         }
 
         /// <summary>
