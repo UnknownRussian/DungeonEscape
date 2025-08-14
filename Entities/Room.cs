@@ -1,19 +1,19 @@
 using System;
+using System.Collections.Generic;
 
 namespace DungeonEscape.Entities
 {
     public class Room
     {
         // Static Values
-        public static int MaxHeight = 5;
-        public static int MaxWidth = 5;
-        public static int MinHeight = 3;
-        public static int MinWidth = 3;
+        public static int MaxHeight = 20;
+        public static int MaxWidth = 10;
+        public static int MinHeight = 5;
+        public static int MinWidth = 5;
 
         // Non-Static Values
         public int Width, Height;
-        public (int X, int Y) EntrenceDoor;
-        public (int X, int Y) ExitDoor;
+        public List<(int X, int Y)> Doors;
         public (int X, int Y) StairsUp;
         public (int X, int Y) StairsDown;
 
@@ -22,6 +22,7 @@ namespace DungeonEscape.Entities
 
         public Room()
         {
+            Doors = new List<(int X, int Y)>();
             Random r = new Random();
             Width = r.Next(MinWidth, MaxWidth + 1);
             Height = r.Next(MinHeight, MaxHeight + 1);
@@ -41,23 +42,13 @@ namespace DungeonEscape.Entities
         }
 
         /// <summary>
-        /// Add Entrence Postion. Should be facing on one of the Exit of another room.
+        /// Add Door Position to Room.
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        public void AddEntrencePosition(int x, int y)
+        public void AddDoor(int x, int y)
         {
-            EntrenceDoor = (x, y);
-        }
-
-        /// <summary>
-        /// Add Exit Postion. Should be facing on one of the Entrences of another room.
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        public void AddExitPosition(int x, int y)
-        {
-            ExitDoor = (x, y);
+            Doors.Add((x, y));
         }
 
         /// <summary>

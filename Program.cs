@@ -1,4 +1,5 @@
 ﻿using System;
+using DungeonEscape.Entities;
 
 namespace DungeonEscape
 {
@@ -7,6 +8,9 @@ namespace DungeonEscape
         public static void Main(string[] args)
         {
             Console.OutputEncoding = System.Text.Encoding.Unicode;
+
+            Floor floor = new Floor(30);
+            floor.PrintAll();
 
             while (true)
             {
